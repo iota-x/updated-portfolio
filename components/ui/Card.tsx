@@ -1,3 +1,4 @@
+"use client";
 import * as React from "react";
 import { cn } from "@/lib/utils"; // utility to merge classNames (I'll show you below if you don't have it)
 
