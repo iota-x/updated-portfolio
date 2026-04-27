@@ -10,12 +10,10 @@ const Footer = () => {
 
       <div className="flex flex-col items-center">
         <h1 className="heading lg:max-w-[45vw]">
-          Ready to take <span className="text-purple">your</span> digital
-          presence to the next level?
+          Always open to <span className="text-purple">new</span> ideas and collaborations.
         </h1>
         <p className="text-white-200 md:mt-10 my-5 text-center">
-          Reach out to me today and let&apos;s discuss how I can help you
-          achieve your goals.
+          Reach out to me and let&apos;s build something amazing.
         </p>
         <a href="mailto:mailmeatankitx@gmail.com">
           <MagicButton
@@ -27,7 +25,7 @@ const Footer = () => {
       </div>
       <div className="flex mt-16 md:flex-row flex-col justify-between items-center">
         <p className="md:text-base text-sm md:font-normal font-light">
-          Copyright © 2025 Ankit Pandey
+          Ankit Pandey
         </p>
 
         <div className="flex items-center md:gap-3 gap-6">
