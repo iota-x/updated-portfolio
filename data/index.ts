@@ -85,7 +85,7 @@ export const projects = [
     des: "A sleek NFT gallery to browse, preview, and explore digital collectibles through a smooth, fully responsive interface.",
     img: "/p1.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/fm.svg"],
-    link: "https://nft-gallery-j2bz.vercel.app",
+    link: "https://nft-gallery-one-eta.vercel.app/",
     github: "https://github.com/iota-x/nft-gallery",
   },
   {
