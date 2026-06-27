@@ -85,7 +85,7 @@ export const projects = [
     des: "A full NFT marketplace on Solana showing NFTs owned by a user and trending collections. Connect a wallet or enter an address to explore the whole collection and past records, and even search an asset by its ID.",
     img: "/nft-library.png",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/fm.svg"],
-    link: "https://nft-gallery-solana.vercel.app/",
+    link: "https://nft-library-solana.vercel.app/",
     github: "https://github.com/iota-x/nft-library",
   },
   {
