@@ -73,7 +73,7 @@ export const projects = [
   {
     id: 1,
     title: "Us — a couple's private space",
-    des: "A cozy private world for two: journal together, save memories, answer a daily question of the day, play quizzes, and watch your streak of 'us' grow. No feed, no followers, no ads — just the two of you.",
+    des: "A cozy private world for two: journal together, save memories, answer a daily question of the day, play quizzes, and watch your streak of 'us' grow. No feed, no followers, no ads — just the two of with end-to-end encryption so its truly your own private space",
     img: "/app-local.png",
     iconLists: ["/next.svg", "/ts.svg", "/tail.svg", "/fm.svg"],
     link: "https://wearesocuteomg.vercel.app/",
