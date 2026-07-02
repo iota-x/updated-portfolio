@@ -265,8 +265,8 @@ const particleVertex = /* glsl */ `
     vec3 p = position;
     p.y += sin(uTime * aSpeed + aOffset + position.x * 0.4) * 0.55;
     p.x += cos(uTime * aSpeed * 0.75 + aOffset + position.y * 0.3) * 0.4;
-    p.x += uMouse.x * aScale * 0.6;
-    p.y += uMouse.y * aScale * 0.4;
+    p.x += uMouse.x * aScale * 1.1;
+    p.y += uMouse.y * aScale * 0.75;
 
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
@@ -351,7 +351,7 @@ const ParticleField = ({ count }: { count: number }) => {
 
   useFrame((state, delta) => {
     uniforms.uTime.value = state.clock.elapsedTime;
-    eased.current.lerp(pointer.current, Math.min(1, delta * 2.5));
+    eased.current.lerp(pointer.current, Math.min(1, delta * 3.5));
     uniforms.uMouse.value.copy(eased.current);
     // the starfield slowly rises as you travel down the page
     if (points.current) {

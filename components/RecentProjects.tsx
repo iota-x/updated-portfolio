@@ -293,183 +293,207 @@ const ProjectModal = ({
     };
   }, [onClose]);
 
+  // full-screen editorial takeover — slides up like a page. no backdrop
+  // blur, no filter animations: translate/opacity only, so it stays smooth
+  // over the WebGL layers.
   const container: Variants = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.07, delayChildren: 0.25 } },
+    visible: { transition: { staggerChildren: 0.08, delayChildren: 0.45 } },
   };
   const item: Variants = {
-    hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
+    hidden: { opacity: 0, y: 28 },
     visible: {
       opacity: 1,
       y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+      transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
     },
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onClick={onClose}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#080809]/70 p-4 backdrop-blur-xl sm:p-6"
+      initial={{ y: "100%" }}
+      animate={{ y: 0 }}
+      exit={{ y: "100%" }}
+      transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+      className="fixed inset-0 z-[6000] overflow-y-auto overflow-x-hidden bg-[#0a0812]"
+      data-lenis-prevent
     >
-      {/* violet vignette behind the panel */}
+      {/* atmosphere */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(124,58,237,0.10), transparent 70%)",
+            "radial-gradient(ellipse 70% 45% at 75% 8%, rgba(124,58,237,0.18), transparent 65%), radial-gradient(ellipse 50% 40% at 10% 90%, rgba(88,28,135,0.14), transparent 70%)",
         }}
       />
+      <div aria-hidden className="star-layer fixed opacity-40" />
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.92, y: 32, filter: "blur(10px)" }}
-        animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, scale: 0.95, y: 24, filter: "blur(8px)" }}
-        transition={{ type: "spring", duration: 0.55, bounce: 0.18 }}
-        onClick={(e) => e.stopPropagation()}
-        className="glass-panel relative max-h-[90vh] w-full max-w-4xl overflow-y-auto overflow-x-hidden !rounded-[1.75rem]"
-        data-lenis-prevent
-      >
-        <Magnetic strength={0.4} className="absolute right-4 top-4 z-20">
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-purple/25
-              bg-[#080809]/70 text-white backdrop-blur-md transition-all duration-300
-              hover:rotate-90 hover:border-purple/60 hover:shadow-[0_0_20px_-4px_rgba(167,139,250,0.7)]"
+      <div className="relative mx-auto max-w-6xl px-6 pb-24 pt-20 sm:px-10">
+        {/* top bar: ghost numeral + close */}
+        <div className="flex items-start justify-between">
+          <span
+            aria-hidden
+            className="select-none font-display text-7xl font-bold leading-none text-purple/[0.12] sm:text-9xl"
           >
-            <IoClose size={20} />
-          </button>
-        </Magnetic>
+            {String(project.id).padStart(2, "0")}
+          </span>
+          <Magnetic strength={0.4}>
+            <button
+              onClick={onClose}
+              aria-label="Close"
+              className="flex h-12 w-12 items-center justify-center rounded-full border border-purple/25
+                bg-[#0b0812]/80 text-white transition-all duration-300 hover:rotate-90
+                hover:border-purple/60 hover:shadow-[0_0_24px_-4px_rgba(167,139,250,0.7)]"
+            >
+              <IoClose size={22} />
+            </button>
+          </Magnetic>
+        </div>
 
-        <div className="grid lg:grid-cols-[1.05fr_1fr]">
-          {/* screenshot side — same liquid-hover treatment as the panels */}
-          <div className="relative h-64 overflow-hidden sm:h-80 lg:h-auto lg:min-h-[32rem]">
-            <div
-              aria-hidden
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(ellipse 80% 60% at 60% 20%, rgba(124,58,237,0.25), transparent 65%), #0d0a16",
-              }}
-            />
-            <div aria-hidden className="star-layer opacity-50" />
+        {/* editorial headline */}
+        <WordReveal
+          words={title}
+          className="-mt-6 max-w-4xl text-4xl text-white sm:-mt-10 sm:text-5xl lg:text-6xl"
+          delay={0.5}
+          active
+        />
+
+        {/* panoramic screenshot band with the liquid-hover treatment */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="visible"
+          className="mt-10"
+        >
+          <motion.div
+            variants={item}
+            className="glass-panel h-[38vh] overflow-hidden !rounded-[1.5rem] md:h-[48vh]"
+          >
             <DistortImage
               src={img}
               alt={title}
               className="h-full w-full object-cover object-top"
             />
-            {/* violet edge light bleeding toward the content side */}
+            {/* vignette so light screenshots blend into the dark stage */}
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0"
+              className="pointer-events-none absolute inset-0 rounded-[inherit]"
               style={{
+                boxShadow: "inset 0 0 90px rgba(8, 8, 9, 0.5)",
                 background:
-                  "linear-gradient(115deg, rgba(124,58,237,0.15), transparent 45%)",
+                  "linear-gradient(to top, rgba(10,8,18,0.4), transparent 28%)",
               }}
             />
-          </div>
+          </motion.div>
 
-          {/* content side — cascading entrance */}
-          <motion.div
-            variants={container}
-            initial="hidden"
-            animate="visible"
-            className="relative flex flex-col justify-center p-7 sm:p-9 lg:p-10"
-          >
-            <span
-              aria-hidden
-              className="pointer-events-none absolute right-6 top-4 select-none font-display text-8xl font-bold text-purple/[0.06]"
-            >
-              {String(project.id).padStart(2, "0")}
-            </span>
-
-            <motion.h2
-              variants={item}
-              className="font-display text-2xl font-bold text-white sm:text-3xl"
-            >
-              {title}
-            </motion.h2>
-
+          {/* description + meta */}
+          <div className="mt-12 grid gap-10 md:grid-cols-[1fr_320px]">
             <motion.p
               variants={item}
-              className="mt-4 text-sm font-light leading-relaxed text-white-100 sm:text-base"
+              className="text-base font-light leading-relaxed text-white-100 sm:text-lg"
             >
               {des}
             </motion.p>
 
-            <motion.div variants={item} className="mt-8">
-              <p className="mb-3 text-xs uppercase tracking-widest text-white/50">
-                Built with
-              </p>
-              <div className="flex flex-wrap items-center gap-2">
-                {iconLists
-                  // dedupe techs that share a name (e.g. two Stream icons)
-                  .filter(
-                    (icon, i, arr) =>
-                      arr.findIndex((o) => techName(o) === techName(icon)) === i
-                  )
-                  .map((icon) => (
-                    <span
-                      key={icon}
-                      className="inline-flex items-center gap-2 rounded-full border border-purple/20
-                        bg-[#0b0812]/70 py-1.5 pl-1.5 pr-3.5"
-                    >
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black">
-                        <img
-                          src={icon}
-                          alt={techName(icon)}
-                          className="h-4 w-4 object-contain"
-                        />
+            <div className="flex flex-col gap-8">
+              <motion.div variants={item}>
+                <p className="mb-3 text-xs uppercase tracking-[0.25em] text-white/50">
+                  Built with
+                </p>
+                <div className="flex flex-wrap items-center gap-2">
+                  {iconLists
+                    // dedupe techs that share a name (e.g. two Stream icons)
+                    .filter(
+                      (icon, i, arr) =>
+                        arr.findIndex(
+                          (o) => techName(o) === techName(icon)
+                        ) === i
+                    )
+                    .map((icon) => (
+                      <span
+                        key={icon}
+                        className="inline-flex items-center gap-2 rounded-full border border-purple/20
+                          bg-[#0b0812]/70 py-1.5 pl-1.5 pr-3.5"
+                      >
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-black">
+                          <img
+                            src={icon}
+                            alt={techName(icon)}
+                            className="h-4 w-4 object-contain"
+                          />
+                        </span>
+                        <span className="text-sm text-white/90">
+                          {techName(icon)}
+                        </span>
                       </span>
-                      <span className="text-sm text-white/90">
-                        {techName(icon)}
-                      </span>
-                    </span>
-                  ))}
-              </div>
-            </motion.div>
+                    ))}
+                </div>
+              </motion.div>
 
-            <motion.div
-              variants={item}
-              className="mt-8 flex flex-wrap items-center gap-4"
-            >
-              <Magnetic strength={0.25}>
-                <a
-                  href={link.startsWith("http") ? link : `https://${link}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 rounded-full border border-purple/25 bg-[#0b0812]/90
-                    px-6 py-3 font-medium text-white transition-all duration-300
-                    hover:border-purple/60 hover:shadow-[0_0_35px_-8px_rgba(167,139,250,0.7)]"
-                >
-                  Check Live Site
-                  <FaLocationArrow color="#CBACF9" />
-                </a>
-              </Magnetic>
-              {github && (
+              <motion.div variants={item} className="flex flex-col gap-4">
                 <Magnetic strength={0.25}>
                   <a
-                    href={github}
+                    href={link.startsWith("http") ? link : `https://${link}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-3 rounded-full border border-purple/25 bg-transparent
-                      px-6 py-3 font-medium text-white transition-all duration-300
-                      hover:border-purple/60 hover:shadow-[0_0_35px_-8px_rgba(167,139,250,0.7)]"
+                    className="group relative flex w-full items-center justify-between overflow-hidden
+                      rounded-full border border-purple/30 bg-[#0b0812]/90 py-2 pl-6 pr-2 text-white
+                      transition-all duration-500 hover:border-purple/70
+                      hover:shadow-[0_0_45px_-10px_rgba(167,139,250,0.8)]"
                   >
-                    <FaGithub className="text-xl" />
-                    View Code
+                    {/* violet sweep fills the pill on hover */}
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 -translate-x-full bg-gradient-to-r from-[#2a1650] to-[#4c1d95]
+                        transition-transform duration-500 ease-out group-hover:translate-x-0"
+                    />
+                    <span className="relative z-10 text-xs font-medium uppercase tracking-[0.25em]">
+                      Check Live Site
+                    </span>
+                    <span
+                      className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full
+                        border border-purple/30 bg-purple/10 text-purple transition-all duration-500
+                        group-hover:rotate-45 group-hover:bg-purple group-hover:text-[#0b0812]"
+                    >
+                      <FaLocationArrow size={13} />
+                    </span>
                   </a>
                 </Magnetic>
-              )}
-            </motion.div>
-          </motion.div>
-        </div>
-      </motion.div>
+                {github && (
+                  <Magnetic strength={0.25}>
+                    <a
+                      href={github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative flex w-full items-center justify-between overflow-hidden
+                        rounded-full border border-purple/30 bg-transparent py-2 pl-6 pr-2 text-white
+                        transition-all duration-500 hover:border-purple/70
+                        hover:shadow-[0_0_45px_-10px_rgba(167,139,250,0.8)]"
+                    >
+                      <span
+                        aria-hidden
+                        className="absolute inset-0 -translate-x-full bg-gradient-to-r from-[#2a1650] to-[#4c1d95]
+                          transition-transform duration-500 ease-out group-hover:translate-x-0"
+                      />
+                      <span className="relative z-10 text-xs font-medium uppercase tracking-[0.25em]">
+                        View Code
+                      </span>
+                      <span
+                        className="relative z-10 flex h-10 w-10 items-center justify-center rounded-full
+                          border border-purple/30 bg-purple/10 text-purple transition-all duration-500
+                          group-hover:scale-110 group-hover:bg-purple group-hover:text-[#0b0812]"
+                      >
+                        <FaGithub size={16} />
+                      </span>
+                    </a>
+                  </Magnetic>
+                )}
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 };

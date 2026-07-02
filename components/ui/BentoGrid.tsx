@@ -134,6 +134,97 @@ export const BentoGridItem = ({
                 backgroundSize: "38% 38%",
               }}
             />
+            {/* constellation: scattered "what ifs" joined into a path that
+                ascends to the north star — "what's next" */}
+            <svg
+              className="absolute inset-0 h-full w-full"
+              viewBox="0 0 600 400"
+              preserveAspectRatio="xMidYMid slice"
+              fill="none"
+            >
+              <path
+                className="constellation-path"
+                d="M70,310 L170,260 L150,180 L260,150 L330,190 L420,110 L500,60"
+                stroke="rgba(203,172,249,0.4)"
+                strokeWidth="1"
+                pathLength={1}
+              />
+              {[
+                [70, 310],
+                [170, 260],
+                [150, 180],
+                [260, 150],
+                [330, 190],
+                [420, 110],
+              ].map(([cx, cy], i) => (
+                <g
+                  key={`${cx}-${cy}`}
+                  className="constellation-node"
+                  style={{ animationDelay: `${i * 0.55}s` }}
+                >
+                  <circle
+                    cx={cx}
+                    cy={cy}
+                    r="6"
+                    fill="rgba(203,172,249,0.18)"
+                  />
+                  <circle cx={cx} cy={cy} r="2" fill="#cbacf9" />
+                </g>
+              ))}
+              {/* the north star */}
+              <g className="north-star">
+                <line
+                  x1="500"
+                  y1="28"
+                  x2="500"
+                  y2="92"
+                  stroke="rgba(203,172,249,0.55)"
+                  strokeWidth="1"
+                />
+                <line
+                  x1="468"
+                  y1="60"
+                  x2="532"
+                  y2="60"
+                  stroke="rgba(203,172,249,0.55)"
+                  strokeWidth="1"
+                />
+                <circle cx="500" cy="60" r="11" fill="rgba(203,172,249,0.22)" />
+                <circle cx="500" cy="60" r="3.5" fill="#ffffff" />
+              </g>
+            </svg>
+
+            {/* rim-lit planet rising out of the corner (kin of the globe card) */}
+            <div
+              className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full lg:h-96 lg:w-96"
+              style={{
+                background:
+                  "radial-gradient(circle at 32% 30%, #2a1650, #0d0716 62%)",
+                boxShadow:
+                  "inset 8px 12px 28px rgba(203,172,249,0.22), inset -24px -24px 70px rgba(0,0,0,0.9), 0 0 70px -18px rgba(124,58,237,0.45)",
+                animation: "planet-drift 14s ease-in-out infinite alternate",
+              }}
+            />
+            {/* thin light arc grazing the planet's horizon */}
+            <div
+              className="absolute -bottom-24 -right-16 h-72 w-72 rounded-full lg:h-96 lg:w-96"
+              style={{
+                background:
+                  "radial-gradient(circle at 32% 30%, rgba(203,172,249,0.35), transparent 28%)",
+                animation: "planet-drift 14s ease-in-out infinite alternate",
+              }}
+            />
+            {/* occasional comets */}
+            <div className="comet" style={{ top: "12%", right: "8%" }} />
+            <div
+              className="comet"
+              style={{
+                top: "30%",
+                right: "35%",
+                animationDelay: "4.5s",
+                animationDuration: "13s",
+              }}
+            />
           </div>
         )}
         <div

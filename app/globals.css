@@ -172,6 +172,101 @@
   }
 }
 
+/* comet streaking across glass windows */
+.comet {
+  position: absolute;
+  width: 130px;
+  height: 1.5px;
+  border-radius: 9999px;
+  background: linear-gradient(90deg, transparent, rgba(203, 172, 249, 0.95));
+  transform: rotate(145deg);
+  opacity: 0;
+  animation: comet-streak 9s ease-in infinite;
+}
+@keyframes comet-streak {
+  0%,
+  74% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(145deg);
+  }
+  76% {
+    opacity: 1;
+  }
+  84% {
+    opacity: 0;
+    transform: translate3d(-280px, 196px, 0) rotate(145deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-280px, 196px, 0) rotate(145deg);
+  }
+}
+
+/* self-drawing constellation: scattered stars connected into an ascending
+   path that resolves at the north star, then fades and begins again */
+.constellation-path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: constellation-draw 14s ease-in-out infinite;
+}
+@keyframes constellation-draw {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  42% {
+    stroke-dashoffset: 0;
+  }
+  75% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  90%,
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+.constellation-node {
+  animation: node-twinkle 3.5s ease-in-out infinite alternate;
+}
+@keyframes node-twinkle {
+  from {
+    opacity: 0.35;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.north-star {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: north-pulse 4s ease-in-out infinite alternate;
+}
+@keyframes north-pulse {
+  from {
+    transform: scale(0.88);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+}
+
+/* slow planetary bob */
+@keyframes planet-drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-6px, -10px, 0);
+  }
+}
+
 /* fluid smoke layer — the sim creates its own canvas inside the container */
 .fluid-layer canvas {
   display: block;
