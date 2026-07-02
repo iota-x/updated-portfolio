@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { IoVolumeHighOutline, IoVolumeMuteOutline } from "react-icons/io5";
 import {
+  chime,
   clickSound,
   loadSoundPref,
   setSoundEnabled,
@@ -43,7 +44,7 @@ const SoundToggle = () => {
     const next = !on;
     setSoundEnabled(next);
     setOn(next);
-    if (next) clickSound();
+    if (next) chime();
   };
 
   return (
