@@ -72,6 +72,15 @@ export const gridItems = [
 export const projects = [
   {
     id: 1,
+    title: "Pulsar — on-chain automation for Solana",
+    des: "A web3 'Zapier' for Solana that automates both on-chain and off-chain workflows — IF this happens → THEN do that. Triggers range from wallet deposits, balance thresholds, token swaps and NFT transfers to scheduled times and plain API calls, while actions span webhooks, Discord/email alerts, on-chain SPL token ops, staking, Jupiter swaps, liquidity-pool creation and stop-loss orders. A smart delegation system keeps it running 24/7 without ever giving up custody of your keys.",
+    img: "/pulsar.png",
+    iconLists: ["/next.svg", "/ts.svg", "/tail.svg", "/three.svg", "/fm.svg"],
+    link: "https://pulsar-sol.vercel.app/",
+    github: "https://github.com/iota-x/pulsar",
+  },
+  {
+    id: 2,
     title: "Us — a couple's private space",
     des: "A cozy private world for two: journal together, save memories, answer a daily question of the day, play quizzes, and watch your streak of 'us' grow. No feed, no followers, no ads — just the two of with end-to-end encryption so its truly your own private space",
     img: "/app-local.png",
@@ -80,7 +89,7 @@ export const projects = [
     github: "https://github.com/iota-x/digital-library",
   },
   {
-    id: 2,
+    id: 3,
     title: "NFT Library",
     des: "A full NFT marketplace on Solana showing NFTs owned by a user and trending collections. Connect a wallet or enter an address to explore the whole collection and past records, and even search an asset by its ID.",
     img: "/nft-library.png",
@@ -89,7 +98,7 @@ export const projects = [
     github: "https://github.com/iota-x/nft-library",
   },
   {
-    id: 3,
+    id: 4,
     title: "Fancy course selling web-app",
     des: "A full-featured course-selling platform where creators can publish courses and learners can browse, purchase, and start learning instantly.",
     img: "/p3.png",
@@ -98,7 +107,7 @@ export const projects = [
     github: "https://github.com/iota-x/course-selling-site",
   },
   {
-    id: 4,
+    id: 5,
     title: "Paytm clone but in a web-app",
     des: "A Paytm-style payments web app with wallet balances, peer-to-peer money transfers, and a secure end-to-end transaction flow.",
     img: "/p2.png",
@@ -107,7 +116,7 @@ export const projects = [
     github: "https://github.com/iota-x/paytm-clone",
   },
   {
-    id: 5,
+    id: 6,
     title: "Auth project using next-auth",
     des: "A complete authentication system built with NextAuth — secure sign-in, session handling, and protected routes out of the box.",
     img: "/p4.png",
