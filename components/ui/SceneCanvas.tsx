@@ -136,6 +136,8 @@ const Blob = ({ quality }: { quality: "full" | "lite" }) => {
   const target = useRef(new THREE.Vector3(0, 0.25, -2));
   const entryT = useRef<number | null>(null);
   const maxScroll = useRef(1);
+  // click impulse: a jolt of energy that ripples through the noise field
+  const impulse = useRef(0);
 
   const uniforms = useMemo(
     () => ({ uTime: { value: 0 }, uAmp: { value: 0.32 } }),
@@ -155,14 +157,19 @@ const Blob = ({ quality }: { quality: "full" | "lite" }) => {
         document.documentElement.scrollHeight - window.innerHeight
       );
     };
+    const onDown = () => {
+      impulse.current = 1;
+    };
     measure();
     // page height settles as fonts/images load
     const id = setInterval(measure, 1500);
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
     window.addEventListener("resize", measure);
     return () => {
       clearInterval(id);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("resize", measure);
     };
   }, []);
@@ -192,10 +199,17 @@ const Blob = ({ quality }: { quality: "full" | "lite" }) => {
     eased.current.lerp(pointer.current, Math.min(1, delta * 2));
     g.rotation.y = t * 0.1 + eased.current.x * 0.35;
     g.rotation.x = Math.sin(t * 0.13) * 0.1 - eased.current.y * 0.25;
-    g.scale.setScalar(appear * k.s * (1 + Math.sin(t * 0.6) * 0.02));
 
-    // breathing
-    uniforms.uAmp.value = 0.32 + Math.sin(t * 0.4) * 0.06;
+    // click impulse decays exponentially; adds a flinch + churn
+    impulse.current *= Math.exp(-delta * 2.4);
+    const imp = impulse.current;
+
+    g.scale.setScalar(
+      appear * k.s * (1 + Math.sin(t * 0.6) * 0.02 + imp * 0.07)
+    );
+
+    // breathing + impulse-driven turbulence
+    uniforms.uAmp.value = 0.32 + Math.sin(t * 0.4) * 0.06 + imp * 0.38;
   });
 
   const detail = quality === "full" ? 160 : 72;

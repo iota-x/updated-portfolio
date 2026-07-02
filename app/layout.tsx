@@ -8,6 +8,7 @@ import CustomCursor from "@/components/ui/CustomCursor";
 import GrainOverlay from "@/components/ui/GrainOverlay";
 import EntrySequence from "@/components/ui/EntrySequence";
 import FluidTrail from "@/components/ui/FluidTrail";
+import SoundToggle from "@/components/ui/SoundToggle";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,32 @@ const syne = Syne({
   variable: "--font-display",
 });
 
+const title = "Ankit Pandey — Full-stack & Web3 Developer";
+const description =
+  "I build software that feels alive — on-chain automation, web apps, and interfaces with atmosphere. Next.js, Solana, Three.js.";
+
 export const metadata: Metadata = {
-  title: "Ankit's Portfolio",
-  description: "A portfolio website for showcasing my projects and skills.",
+  // TODO: set NEXT_PUBLIC_SITE_URL (or hardcode) to the deployed domain
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  ),
+  title,
+  description,
+  icons: { icon: "/favicon.svg" },
+  openGraph: {
+    title,
+    description,
+    type: "website",
+    siteName: "Ankit Pandey",
+    images: ["/og.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title,
+    description,
+    creator: "@iota_xx",
+    images: ["/og.png"],
+  },
 };
 
 export default function RootLayout({
@@ -30,9 +54,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href="/jsm-logo.png" sizes="any" />
-      </head>
       <body className={`${inter.className} ${syne.variable}`}>
         <ThemeProvider
           attribute="class"
@@ -44,6 +65,7 @@ export default function RootLayout({
           <FluidTrail />
           <CustomCursor />
           <GrainOverlay />
+          <SoundToggle />
           <EntrySequence />
         </ThemeProvider>
       </body>

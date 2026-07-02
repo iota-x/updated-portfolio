@@ -24,8 +24,8 @@ const Footer = () => {
       <div className="flex flex-col items-center">
         <Elastic strength={12}>
           <WordReveal
-            words="Always open to new ideas and collaborations."
-            accent="new"
+            words="Let's build something the web hasn't seen yet."
+            accent="hasn't seen yet."
             className="heading lg:max-w-[45vw]"
           />
         </Elastic>
@@ -36,7 +36,8 @@ const Footer = () => {
           transition={{ duration: 0.9, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="text-white-200 md:mt-10 my-5 text-center"
         >
-          Reach out to me and let&apos;s build something amazing.
+          Tell me what you&apos;re dreaming up — I&apos;ll handle the
+          engineering.
         </motion.p>
         <Magnetic strength={0.25}>
           <a href="mailto:mailmeatankitx@gmail.com">
@@ -61,10 +62,11 @@ const Footer = () => {
                 href={info.link}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Ankit on ${new URL(info.link).hostname.replace("www.", "")}`}
                 className="glass-panel flex h-10 w-10 items-center justify-center !rounded-xl
                   transition-shadow duration-500 hover:shadow-[0_0_26px_-4px_rgba(167,139,250,0.65)]"
               >
-                <img src={info.img} alt="icons" width={20} height={20} />
+                <img src={info.img} alt="" width={20} height={20} />
               </a>
             </Magnetic>
           ))}

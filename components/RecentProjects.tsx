@@ -45,8 +45,8 @@ const RecentProjects = () => {
     <section id="projects" className="py-20">
       <Elastic strength={12}>
         <WordReveal
-          words="A small selection of recent projects"
-          accent="recent projects"
+          words="Things I've actually shipped"
+          accent="shipped"
           className="heading"
         />
       </Elastic>
@@ -146,6 +146,15 @@ const ProjectPanel = ({
         >
           <motion.div
             onClick={onOpen}
+            role="button"
+            tabIndex={0}
+            aria-label={`Open details for ${title}`}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                onOpen();
+              }
+            }}
             onMouseMove={onTilt}
             onMouseLeave={resetTilt}
             style={
@@ -168,13 +177,22 @@ const ProjectPanel = ({
                 style={reduced ? undefined : { y: imgY }}
                 className="h-full w-full"
               >
-                {/* WebGL liquid ripple on hover; plain img underneath as fallback */}
-                <DistortImage
-                  src={img}
-                  alt={title}
-                  className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
-                    duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
-                />
+                {/* shared element: morphs into the takeover's panoramic band */}
+                <motion.div
+                  layoutId={`project-image-${project.id}`}
+                  transition={{
+                    layout: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+                  }}
+                  className="h-full w-full"
+                >
+                  {/* WebGL liquid ripple on hover; plain img underneath as fallback */}
+                  <DistortImage
+                    src={img}
+                    alt={title}
+                    className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
+                      duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
+                  />
+                </motion.div>
               </motion.div>
               {/* violet light bleeding over the screenshot edge */}
               <div
@@ -275,6 +293,12 @@ const ProjectModal = ({
   onClose: () => void;
 }) => {
   const { title, des, img, iconLists, link, github } = project;
+  const closeRef = useRef<HTMLButtonElement>(null);
+
+  // move keyboard focus into the dialog when it opens
+  useEffect(() => {
+    closeRef.current?.focus();
+  }, []);
 
   // close on Escape and lock background scroll while open
   useEffect(() => {
@@ -311,12 +335,15 @@ const ProjectModal = ({
 
   return (
     <motion.div
-      initial={{ y: "100%" }}
-      animate={{ y: 0 }}
-      exit={{ y: "100%" }}
-      transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1] }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
       className="fixed inset-0 z-[6000] overflow-y-auto overflow-x-hidden bg-[#0a0812]"
       data-lenis-prevent
+      role="dialog"
+      aria-modal="true"
+      aria-label={title}
     >
       {/* atmosphere */}
       <div
@@ -340,6 +367,7 @@ const ProjectModal = ({
           </span>
           <Magnetic strength={0.4}>
             <button
+              ref={closeRef}
               onClick={onClose}
               aria-label="Close"
               className="flex h-12 w-12 items-center justify-center rounded-full border border-purple/25
@@ -367,7 +395,8 @@ const ProjectModal = ({
           className="mt-10"
         >
           <motion.div
-            variants={item}
+            layoutId={`project-image-${project.id}`}
+            transition={{ layout: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }}
             className="glass-panel h-[38vh] overflow-hidden !rounded-[1.5rem] md:h-[48vh]"
           >
             <DistortImage

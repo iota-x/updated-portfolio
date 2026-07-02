@@ -81,8 +81,8 @@ const Technologies: FC = () => {
       <div className="mb-16 text-center">
         <Elastic strength={12}>
           <WordReveal
-            words="Technologies I know"
-            accent="know"
+            words="Tools I think in"
+            accent="think"
             className="text-center text-4xl font-extrabold tracking-tight sm:text-6xl"
             // font-display comes from WordReveal itself
           />
@@ -94,8 +94,8 @@ const Technologies: FC = () => {
           transition={{ duration: 0.9, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto mt-4 max-w-2xl text-lg text-gray-400"
         >
-          A curated collection of tools, frameworks, and languages I use to
-          build production-ready applications.
+          The stack I reach for when an idea needs to become something real —
+          and production-ready.
         </motion.p>
       </div>
 

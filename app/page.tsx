@@ -10,12 +10,14 @@ import RecentProjects from "@/components/RecentProjects";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Technologies from "@/components/Technologies";
 import SceneCanvas from "@/components/ui/SceneCanvas";
+import SectionCounter from "@/components/ui/SectionCounter";
 
 const Home = () => {
   return (
     <main className="relative flex justify-center items-center flex-col mx-auto sm:px-10 px-5 overflow-clip">
       {/* persistent WebGL layer — the blob travels with you through the page */}
       <SceneCanvas />
+      <SectionCounter />
       <div className="max-w-7xl w-full relative z-10">
         <FloatingNav navItems={navItems} />
         <Hero />

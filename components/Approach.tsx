@@ -49,9 +49,13 @@ const Approach = () => {
   const reduced = useReducedMotion();
 
   return (
-    <section className="w-full py-20">
+    <section id="approach" className="w-full py-20">
       <Elastic strength={12}>
-        <WordReveal words="My approach" accent="approach" className="heading" />
+        <WordReveal
+          words="How ideas become real"
+          accent="real"
+          className="heading"
+        />
       </Elastic>
 
       {reduced ? (

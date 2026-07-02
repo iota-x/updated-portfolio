@@ -15,7 +15,7 @@ const Hero = () => {
   const entered = useEntered();
 
   return (
-    <div className="relative pb-20 pt-36">
+    <div id="home" className="relative pb-20 pt-36">
       <div
         aria-hidden
         className="absolute top-0 left-1/2 h-screen w-screen -translate-x-1/2"
@@ -37,18 +37,19 @@ const Hero = () => {
                 delay: 0.2,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="max-w-80 text-center text-xs uppercase tracking-[0.3em] text-purple/90 md:text-left"
+              className="max-w-96 text-center text-xs uppercase tracking-[0.3em] text-purple/90 md:text-left"
             >
-              Dynamic Web Magic with Next.js
+              Ankit Pandey · Full-stack &amp; Web3
             </motion.p>
           </Elastic>
 
           <Elastic strength={12}>
             <WordReveal
-              words="Transforming Concepts into Seamless User Experiences"
+              words="I build software that feels alive"
               className="my-6 text-center text-[40px] leading-[1.05] text-white md:text-left md:text-6xl lg:text-7xl"
               delay={0.35}
               active={entered}
+              accent="alive"
             />
           </Elastic>
 
@@ -59,7 +60,8 @@ const Hero = () => {
               transition={{ duration: 1, delay: 1, ease: [0.22, 1, 0.36, 1] }}
               className="mb-4 text-center text-sm text-white-100 md:text-left md:text-lg md:tracking-wider lg:text-xl"
             >
-              Hi! I&apos;m Ankit, a full-stack Developer based in India.
+              I turn wild ideas into working products — from on-chain
+              automation to private little worlds for two.
             </motion.p>
           </Elastic>
 

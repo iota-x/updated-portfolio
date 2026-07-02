@@ -107,6 +107,16 @@
   color: #fff;
 }
 
+/* keyboard focus in the site's light language */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 2px solid rgba(203, 172, 249, 0.75);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
 /* film grain across the whole page */
 .grain-overlay {
   position: fixed;
