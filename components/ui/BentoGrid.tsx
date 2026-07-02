@@ -86,15 +86,27 @@ export const BentoGridItem = ({
         "glass-panel row-span-1 relative overflow-hidden !rounded-3xl group/bento transition-shadow duration-500 hover:shadow-[0_0_60px_-18px_rgba(139,92,246,0.4)] justify-between flex flex-col space-y-4",
         className
       )}
-      style={{
-        // violet-black fill matching the page's light language
-        background: "linear-gradient(120deg, #0d0a16 0%, #130d20 100%)",
-      }}
+      style={
+        id === 1
+          ? {
+              // card 1 is a window: the page's real starfield + smoke show
+              // through crystal-clear glass (no blur — stars stay sharp)
+              background: "rgba(13, 10, 22, 0.35)",
+              backdropFilter: "saturate(140%)",
+              WebkitBackdropFilter: "saturate(140%)",
+            }
+          : {
+              // violet-black fill matching the page's light language
+              background: "linear-gradient(120deg, #0d0a16 0%, #130d20 100%)",
+            }
+      }
     >
       {/* add img divs */}
       <div className={`${id === 6 && "flex justify-center"} h-full`}>
         <div className="w-full h-full absolute">
-          {img && (
+          {/* card 1: the laptop mockup clashed with the glass language —
+              replaced with a violet nebula + orbiting light rings */}
+          {img && id !== 1 && (
             <img
               src={img}
               alt={img}
@@ -102,6 +114,28 @@ export const BentoGridItem = ({
             />
           )}
         </div>
+        {id === 1 && (
+          <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+            {/* nebula tint, same family as the hero aurora */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse 75% 60% at 70% 25%, rgba(124,58,237,0.22), transparent 65%), radial-gradient(ellipse 55% 50% at 15% 80%, rgba(88,28,135,0.18), transparent 70%)",
+              }}
+            />
+            {/* two star layers drifting at different speeds */}
+            <div className="star-layer opacity-90" />
+            <div
+              className="star-layer opacity-60"
+              style={{
+                animationDuration: "140s",
+                animationDirection: "reverse",
+                backgroundSize: "38% 38%",
+              }}
+            />
+          </div>
+        )}
         <div
           className={`absolute right-0 -bottom-5 ${id === 5 && "w-full opacity-80"
             } `}
@@ -142,7 +176,7 @@ export const BentoGridItem = ({
           {/* add text-3xl max-w-96 , remove text-neutral-600 dark:text-neutral-300*/}
           {/* remove mb-2 mt-2 */}
           <div
-            className={`font-sans text-lg lg:text-3xl max-w-96 font-bold z-10`}
+            className={`font-display text-lg lg:text-3xl max-w-96 font-bold z-10`}
           >
             {title}
           </div>

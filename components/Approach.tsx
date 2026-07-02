@@ -13,6 +13,7 @@ import {
 
 import { CanvasRevealEffect } from "./ui/CanvasRevealEffect";
 import WordReveal from "./ui/WordReveal";
+import Elastic from "./ui/Elastic";
 
 const phases = [
   {
@@ -49,7 +50,9 @@ const Approach = () => {
 
   return (
     <section className="w-full py-20">
-      <WordReveal words="My approach" accent="approach" className="heading" />
+      <Elastic strength={12}>
+        <WordReveal words="My approach" accent="approach" className="heading" />
+      </Elastic>
 
       {reduced ? (
         <StaticPhases />
@@ -132,7 +135,7 @@ const PinnedPhases = () => {
                 <span className="glass-panel !rounded-full px-5 py-2 text-xl font-bold text-purple">
                   {phase.order}
                 </span>
-                <h2 className="mt-6 text-3xl font-bold text-white lg:text-4xl">
+                <h2 className="mt-6 font-display text-3xl font-bold text-white lg:text-4xl">
                   {phase.title}
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-white-100 lg:text-lg">
@@ -198,7 +201,9 @@ const StaticPhases = () => {
           <span className="glass-panel inline-block !rounded-full px-4 py-1.5 text-base font-bold text-purple">
             {phase.order}
           </span>
-          <h2 className="mt-4 text-2xl font-bold text-white">{phase.title}</h2>
+          <h2 className="mt-4 font-display text-2xl font-bold text-white">
+            {phase.title}
+          </h2>
           <p className="mt-3 text-sm leading-relaxed text-white-100 sm:text-base">
             {phase.des}
           </p>

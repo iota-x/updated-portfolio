@@ -9,12 +9,15 @@ const WordReveal = ({
   className,
   delay = 0,
   accent,
+  active,
 }: {
   words: string;
   className?: string;
   delay?: number;
   /** substring of `words` rendered in the accent color */
   accent?: string;
+  /** when provided, plays on `true` instead of on scroll into view */
+  active?: boolean;
 }) => {
   const reduced = useReducedMotion();
   const accentSet = new Set(accent?.split(" ") ?? []);
@@ -41,11 +44,15 @@ const WordReveal = ({
   return (
     <motion.h1
       aria-label={words}
-      className={cn("font-bold leading-[1.15]", className)}
+      className={cn("font-display font-bold leading-[1.15]", className)}
       variants={container}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      {...(active === undefined
+        ? {
+            whileInView: "visible" as const,
+            viewport: { once: true, margin: "-80px" },
+          }
+        : { animate: active ? ("visible" as const) : ("hidden" as const) })}
     >
       {words.split(" ").map((w, i) => (
         <span

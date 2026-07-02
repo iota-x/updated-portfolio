@@ -3,6 +3,7 @@
 import { CSSProperties, FC } from "react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import WordReveal from "./ui/WordReveal";
+import Elastic from "./ui/Elastic";
 
 interface TechItem {
   name: string;
@@ -78,11 +79,14 @@ const Technologies: FC = () => {
       />
 
       <div className="mb-16 text-center">
-        <WordReveal
-          words="Technologies I know"
-          accent="know"
-          className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl"
-        />
+        <Elastic strength={12}>
+          <WordReveal
+            words="Technologies I know"
+            accent="know"
+            className="text-center text-4xl font-extrabold tracking-tight sm:text-6xl"
+            // font-display comes from WordReveal itself
+          />
+        </Elastic>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}

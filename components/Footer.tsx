@@ -6,6 +6,7 @@ import { socialMedia } from "@/data";
 import MagicButton from "./MagicButton";
 import Magnetic from "./ui/Magnetic";
 import WordReveal from "./ui/WordReveal";
+import Elastic from "./ui/Elastic";
 
 const Footer = () => {
   return (
@@ -21,11 +22,13 @@ const Footer = () => {
       />
 
       <div className="flex flex-col items-center">
-        <WordReveal
-          words="Always open to new ideas and collaborations."
-          accent="new"
-          className="heading lg:max-w-[45vw]"
-        />
+        <Elastic strength={12}>
+          <WordReveal
+            words="Always open to new ideas and collaborations."
+            accent="new"
+            className="heading lg:max-w-[45vw]"
+          />
+        </Elastic>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
