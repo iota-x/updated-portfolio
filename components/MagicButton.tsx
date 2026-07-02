@@ -2,12 +2,8 @@
 import React from "react";
 
 /**
- *  UI: border magic from tailwind css btns
- *  Link: https://ui.aceternity.com/components/tailwindcss-buttons
- *
- *  change border radius to rounded-lg
- *  add margin of md:mt-10
- *  remove focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50
+ * glass pill with a 1px violet gradient border; the accent acts as a
+ * light source — glow blooms on hover instead of a flat fill
  */
 const MagicButton = ({
   title,
@@ -24,15 +20,23 @@ const MagicButton = ({
 }) => {
   return (
     <button
-      className="relative inline-flex h-12 w-full md:w-60 md:mt-10 overflow-hidden rounded-lg p-[1px] focus:outline-none"
+      className="group relative inline-flex h-12 w-full overflow-hidden rounded-full p-[1px] focus:outline-none md:mt-10 md:w-60"
       onClick={handleClick}
     >
-      <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
-
-      {/* remove px-3 py-1, add px-5 gap-2 */}
+      {/* 1px gradient border */}
       <span
-        className={`inline-flex h-full w-full cursor-pointer items-center justify-center rounded-lg
-             bg-slate-950 px-7 text-sm font-medium text-white backdrop-blur-3xl gap-2 ${otherClasses}`}
+        aria-hidden
+        className="absolute inset-0 rounded-full opacity-70 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background:
+            "linear-gradient(120deg, rgba(203,172,249,0.55), rgba(124,58,237,0.15) 40%, rgba(203,172,249,0.06) 70%, rgba(203,172,249,0.45))",
+        }}
+      />
+
+      <span
+        className={`relative inline-flex h-full w-full cursor-pointer items-center justify-center gap-2 rounded-full
+             bg-[#0b0812]/90 px-7 text-sm font-medium text-white backdrop-blur-xl transition-shadow duration-500
+             group-hover:shadow-[0_0_45px_-8px_rgba(167,139,250,0.7)] ${otherClasses}`}
       >
         {position === "left" && icon}
         {title}

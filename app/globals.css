@@ -36,7 +36,8 @@
   }
 
   .dark {
-    --background: 240 10% 3.9%;
+    /* near-black base (#080809) with a violet undertone */
+    --background: 240 6% 3%;
     --foreground: 0 0% 98%;
 
     --card: 240 10% 3.9%;
@@ -68,7 +69,13 @@
 
 @layer base {
   * {
-    @apply border-border !scroll-smooth;
+    @apply border-border;
+  }
+  /* native smooth scrolling only when Lenis is off (reduced motion) */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
   body {
     @apply bg-background text-foreground;
@@ -82,4 +89,150 @@
   .heading {
     @apply font-bold text-4xl md:text-5xl text-center;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Cinematic layer — grain, cursor, hero atmosphere, glass panels    */
+/* ------------------------------------------------------------------ */
+
+::selection {
+  background: rgba(124, 58, 237, 0.45);
+  color: #fff;
+}
+
+/* film grain across the whole page */
+.grain-overlay {
+  position: fixed;
+  inset: -100%;
+  z-index: 9000;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='256' height='256'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 0.9s steps(6) infinite;
+}
+@keyframes grain-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2%, 3%);
+  }
+  40% {
+    transform: translate(3%, -2%);
+  }
+  60% {
+    transform: translate(-3%, -1%);
+  }
+  80% {
+    transform: translate(2%, 2%);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay {
+    animation: none;
+  }
+}
+
+/* custom cursor — lagged ring + dot, fine pointers only */
+.has-custom-cursor,
+.has-custom-cursor * {
+  cursor: none !important;
+}
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(203, 172, 249, 0.6);
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 4px;
+  height: 4px;
+  background: #cbacf9;
+  border-radius: 9999px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+}
+@media (pointer: coarse) {
+  .cursor-ring,
+  .cursor-dot {
+    display: none;
+  }
+}
+
+/* deep violet -> black atmosphere behind the hero (also the no-WebGL fallback) */
+.hero-aurora {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+      ellipse 62% 52% at 50% 18%,
+      rgba(124, 58, 237, 0.26),
+      transparent 66%
+    ),
+    radial-gradient(
+      ellipse 48% 42% at 80% 55%,
+      rgba(88, 28, 135, 0.18),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 46% 42% at 15% 68%,
+      rgba(46, 16, 101, 0.22),
+      transparent 70%
+    ),
+    #080809;
+}
+/* fades the hero scene into the page base */
+.hero-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 11rem;
+  background: linear-gradient(to bottom, transparent, #080809);
+  pointer-events: none;
+}
+
+/* glass panel with a 1px gradient border (border drawn via masked ::before) */
+.glass-panel {
+  position: relative;
+  border-radius: 1.25rem;
+  background: rgba(14, 10, 22, 0.55);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(203, 172, 249, 0.35),
+    rgba(203, 172, 249, 0.05) 35%,
+    rgba(124, 58, 237, 0.06) 65%,
+    rgba(203, 172, 249, 0.22)
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }

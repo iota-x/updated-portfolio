@@ -82,16 +82,13 @@ export const BentoGridItem = ({
   return (
     <div
       className={cn(
-        // remove p-4 rounded-3xl dark:bg-black dark:border-white/[0.2] bg-white  border border-transparent, add border border-white/[0.1] overflow-hidden relative
-        "row-span-1 relative overflow-hidden rounded-3xl border border-white/[0.1] group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none justify-between flex flex-col space-y-4",
+        // glass panel: 1px gradient hairline via .glass-panel, violet glow on hover
+        "glass-panel row-span-1 relative overflow-hidden !rounded-3xl group/bento transition-shadow duration-500 hover:shadow-[0_0_60px_-18px_rgba(139,92,246,0.4)] justify-between flex flex-col space-y-4",
         className
       )}
       style={{
-        //   add these two
-        //   you can generate the color from here https://cssgradient.io/
-        background: "rgb(4,7,29)",
-        backgroundColor:
-          "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
+        // violet-black fill matching the page's light language
+        background: "linear-gradient(120deg, #0d0a16 0%, #130d20 100%)",
       }}
     >
       {/* add img divs */}
@@ -120,9 +117,16 @@ export const BentoGridItem = ({
         </div>
         {id === 6 && (
           // add background animation , remove the p tag
-          <BackgroundGradientAnimation>
-            {/* <div className="absolute z-50 inset-0 flex items-center justify-center text-white font-bold px-4 pointer-events-none text-3xl text-center md:text-4xl lg:text-7xl"></div> */}
-          </BackgroundGradientAnimation>
+          <BackgroundGradientAnimation
+            gradientBackgroundStart="rgb(19, 10, 34)"
+            gradientBackgroundEnd="rgb(8, 8, 9)"
+            firstColor="124, 58, 237"
+            secondColor="167, 139, 250"
+            thirdColor="88, 28, 135"
+            fourthColor="76, 29, 149"
+            fifthColor="139, 92, 246"
+            pointerColor="167, 139, 250"
+          />
         )}
 
         <div
@@ -155,20 +159,20 @@ export const BentoGridItem = ({
                   <span
                     key={i}
                     className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
-                    lg:opacity-100 rounded-lg text-center bg-[#10132E]"
+                    lg:opacity-100 rounded-lg text-center border border-purple/10 bg-[#130f22]"
                   >
                     {item}
                   </span>
                 ))}
-                <span className="lg:py-4 lg:px-3 py-4 px-3  rounded-lg text-center bg-[#10132E]"></span>
+                <span className="lg:py-4 lg:px-3 py-4 px-3  rounded-lg text-center border border-purple/10 bg-[#130f22]"></span>
               </div>
               <div className="flex flex-col gap-3 md:gap-3 lg:gap-8">
-                <span className="lg:py-4 lg:px-3 py-4 px-3  rounded-lg text-center bg-[#10132E]"></span>
+                <span className="lg:py-4 lg:px-3 py-4 px-3  rounded-lg text-center border border-purple/10 bg-[#130f22]"></span>
                 {rightLists.map((item, i) => (
                   <span
                     key={i}
                     className="lg:py-4 lg:px-3 py-2 px-3 text-xs lg:text-base opacity-50 
-                    lg:opacity-100 rounded-lg text-center bg-[#10132E]"
+                    lg:opacity-100 rounded-lg text-center border border-purple/10 bg-[#130f22]"
                   >
                     {item}
                   </span>
@@ -197,7 +201,6 @@ export const BentoGridItem = ({
                 icon={<IoCopyOutline />}
                 position="left"
                 handleClick={handleCopy}
-                otherClasses="!bg-[#161A31]"
               />
             </div>
           )}
