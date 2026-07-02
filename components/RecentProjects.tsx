@@ -43,6 +43,11 @@ const RecentProjects = () => {
               key={id}
             >
               <PinContainer title={title} href={link}>
+                {/* clicking anywhere on the card opens the full details modal */}
+                <div
+                  onClick={() => setSelected(project)}
+                  className="cursor-pointer"
+                >
                 <div className="relative flex items-center justify-center sm:w-[570px] w-[80vw] overflow-hidden sm:h-[40vh] h-[30vh] mb-10">
                   <div
                     className="relative w-full h-full overflow-hidden lg:rounded-3xl"
@@ -99,6 +104,7 @@ const RecentProjects = () => {
                     {github && (
                       <a
                         href={github}
+                        onClick={(e) => e.stopPropagation()}
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={`${title} on GitHub`}
@@ -110,6 +116,7 @@ const RecentProjects = () => {
                     )}
                     <a
                       href={link.startsWith("http") ? link : `https://${link}`}
+                      onClick={(e) => e.stopPropagation()}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex justify-center items-center hover:underline"
@@ -120,6 +127,7 @@ const RecentProjects = () => {
                       <FaLocationArrow className="ms-3" color="#CBACF9" />
                     </a>
                   </div>
+                </div>
                 </div>
               </PinContainer>
             </div>
