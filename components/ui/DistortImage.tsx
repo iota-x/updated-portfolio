@@ -47,19 +47,19 @@ const frag = /* glsl */ `
   }
 `;
 
-const DistortPlane = ({
-  src,
-  mouse,
-  hoverTarget,
-  invalidateRef,
-}: {
-  src: string;
+type PlaneRefs = {
   mouse: React.MutableRefObject<THREE.Vector2>;
   hoverTarget: React.MutableRefObject<number>;
   invalidateRef: React.MutableRefObject<() => void>;
-}) => {
-  const tex = useLoader(THREE.TextureLoader, src);
-  const { viewport, invalidate } = useThree();
+};
+
+// shared uniforms + per-frame ripple animation for both texture sources
+const useDistortUniforms = (
+  tex: THREE.Texture,
+  { mouse, hoverTarget, invalidateRef }: PlaneRefs,
+  getAspect: () => number
+) => {
+  const { invalidate } = useThree();
 
   // expose invalidate so the DOM wrapper can wake the demand-mode loop
   useEffect(() => {
@@ -78,23 +78,35 @@ const DistortPlane = ({
     [tex]
   );
 
-  useEffect(() => {
-    tex.colorSpace = THREE.SRGBColorSpace;
-    tex.needsUpdate = true;
-  }, [tex]);
-
   useFrame((state, delta) => {
     uniforms.uTime.value = state.clock.elapsedTime;
     uniforms.uMouse.value.lerp(mouse.current, Math.min(1, delta * 8));
     uniforms.uHover.value +=
       (hoverTarget.current - uniforms.uHover.value) * Math.min(1, delta * 6);
-    const img = tex.image as HTMLImageElement | undefined;
-    if (img?.width) uniforms.uImageAspect.value = img.width / img.height;
+    const aspect = getAspect();
+    if (aspect) uniforms.uImageAspect.value = aspect;
     uniforms.uCanvasAspect.value = state.size.width / state.size.height;
     // demand mode: keep the loop alive only while the ripple is active
     if (hoverTarget.current > 0 || uniforms.uHover.value > 0.004) {
       state.invalidate();
     }
+  });
+
+  return uniforms;
+};
+
+const DistortPlane = ({ src, ...refs }: { src: string } & PlaneRefs) => {
+  const tex = useLoader(THREE.TextureLoader, src);
+  const { viewport } = useThree();
+
+  useEffect(() => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.needsUpdate = true;
+  }, [tex]);
+
+  const uniforms = useDistortUniforms(tex, refs, () => {
+    const img = tex.image as HTMLImageElement | undefined;
+    return img?.width ? img.width / img.height : 0;
   });
 
   return (
@@ -109,18 +121,57 @@ const DistortPlane = ({
   );
 };
 
-// screenshot with WebGL liquid distortion on hover. the plain <img> always
-// renders (SEO/fallback); the canvas overlays it on capable desktops only.
+// same ripple, but sampling a playing <video> element as a live texture
+const DistortVideoPlane = ({
+  videoEl,
+  ...refs
+}: { videoEl: HTMLVideoElement } & PlaneRefs) => {
+  const { viewport } = useThree();
+
+  const tex = useMemo(() => {
+    const t = new THREE.VideoTexture(videoEl);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.minFilter = THREE.LinearFilter;
+    t.magFilter = THREE.LinearFilter;
+    return t;
+  }, [videoEl]);
+
+  useEffect(() => () => tex.dispose(), [tex]);
+
+  const uniforms = useDistortUniforms(tex, refs, () =>
+    videoEl.videoWidth ? videoEl.videoWidth / videoEl.videoHeight : 0
+  );
+
+  return (
+    <mesh scale={[viewport.width, viewport.height, 1]}>
+      <planeGeometry args={[1, 1]} />
+      <shaderMaterial
+        vertexShader={vert}
+        fragmentShader={frag}
+        uniforms={uniforms}
+      />
+    </mesh>
+  );
+};
+
+// screenshot with WebGL liquid distortion on hover. the plain <img> (or
+// looping <video>) always renders (SEO/fallback); the canvas overlays it on
+// capable desktops only. for video the overlay fades in only while hovered,
+// since the demand-mode canvas would otherwise freeze a stale frame on top.
 const DistortImage = ({
   src,
   alt,
   className,
+  video,
 }: {
   src: string;
   alt: string;
   className?: string;
+  video?: string;
 }) => {
   const [enabled, setEnabled] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const [videoEl, setVideoEl] = useState<HTMLVideoElement | null>(null);
   const mouse = useRef(new THREE.Vector2(0.5, 0.5));
   const hoverTarget = useRef(0);
   const wrap = useRef<HTMLDivElement>(null);
@@ -161,15 +212,47 @@ const DistortImage = ({
         enabled
           ? () => {
               hoverTarget.current = 1;
+              setHovered(true);
               invalidateRef.current();
             }
           : undefined
       }
-      onPointerLeave={enabled ? () => (hoverTarget.current = 0) : undefined}
+      onPointerLeave={
+        enabled
+          ? () => {
+              hoverTarget.current = 0;
+              setHovered(false);
+            }
+          : undefined
+      }
     >
-      <img src={src} alt={alt} className={className} />
-      {enabled && (
-        <div aria-hidden className="absolute inset-0">
+      {video ? (
+        <video
+          ref={setVideoEl}
+          src={video}
+          poster={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-label={alt}
+          className={className}
+        />
+      ) : (
+        <img src={src} alt={alt} className={className} />
+      )}
+      {enabled && (!video || videoEl) && (
+        <div
+          aria-hidden
+          className={
+            video
+              ? `absolute inset-0 transition-opacity duration-300 ${
+                  hovered ? "opacity-100" : "opacity-0"
+                }`
+              : "absolute inset-0"
+          }
+        >
           <Canvas
             dpr={[1, 1.25]}
             frameloop="demand"
@@ -177,12 +260,21 @@ const DistortImage = ({
             gl={{ antialias: false, alpha: true }}
           >
             <Suspense fallback={null}>
-              <DistortPlane
-                src={src}
-                mouse={mouse}
-                hoverTarget={hoverTarget}
-                invalidateRef={invalidateRef}
-              />
+              {video && videoEl ? (
+                <DistortVideoPlane
+                  videoEl={videoEl}
+                  mouse={mouse}
+                  hoverTarget={hoverTarget}
+                  invalidateRef={invalidateRef}
+                />
+              ) : (
+                <DistortPlane
+                  src={src}
+                  mouse={mouse}
+                  hoverTarget={hoverTarget}
+                  invalidateRef={invalidateRef}
+                />
+              )}
             </Suspense>
           </Canvas>
         </div>

@@ -178,28 +178,18 @@ const ProjectPanel = ({
                 style={reduced ? undefined : { y: imgY }}
                 className="h-full w-full"
               >
-                {/* live demo clip when available; WebGL liquid ripple image otherwise */}
-                {video ? (
-                  <video
-                    src={video}
-                    poster={img}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label={`${title} demo`}
-                    className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
-                      duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
-                  />
-                ) : (
+                {/* WebGL liquid ripple on hover; plain img/video underneath as fallback */}
+                <div
+                  className="h-64 w-full scale-[1.15] transition-transform duration-700
+                    ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
+                >
                   <DistortImage
                     src={img}
+                    video={video}
                     alt={title}
-                    className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
-                      duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
+                    className="h-full w-full object-cover object-top"
                   />
-                )}
+                </div>
               </motion.div>
               {/* violet light bleeding over the screenshot edge */}
               <div
@@ -409,25 +399,12 @@ const ProjectModal = ({
             variants={item}
             className="glass-panel h-[38vh] overflow-hidden !rounded-[1.5rem] md:h-[48vh]"
           >
-            {video ? (
-              <video
-                src={video}
-                poster={img}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                aria-label={`${title} demo`}
-                className="h-full w-full object-cover object-top"
-              />
-            ) : (
-              <DistortImage
-                src={img}
-                alt={title}
-                className="h-full w-full object-cover object-top"
-              />
-            )}
+            <DistortImage
+              src={img}
+              video={video}
+              alt={title}
+              className="h-full w-full object-cover object-top"
+            />
             {/* vignette so light screenshots blend into the dark stage */}
             <div
               aria-hidden
