@@ -108,12 +108,12 @@ export const projects = [
   },
   {
     id: 5,
-    title: "Paytm clone but in a web-app",
-    des: "A Paytm-style payments web app with wallet balances, peer-to-peer money transfers, and a secure end-to-end transaction flow.",
-    img: "/p2.webp",
-    iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/three.svg", "/c.svg"],
-    link: "https://github.com/iota-x/paytm-clone",
-    github: "https://github.com/iota-x/paytm-clone",
+    title: "Heartbeat — Solana mainnet, live in 3D",
+    des: "Every light is a real transaction streaming off Solana mainnet. A websocket ingest service classifies every block; whale transfers land as golden comets with camera shake and synthesized bass. 60fps, 9 draw calls, zero allocations per frame.",
+    img: "/heartbeat.webp",
+    iconLists: ["/next.svg", "/ts.svg", "/tail.svg", "/three.svg"],
+    link: "https://heartbeat-solana.vercel.app/",
+    github: "https://github.com/iota-x/heartbeat",
   },
   {
     id: 6,
