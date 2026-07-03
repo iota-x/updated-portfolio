@@ -187,6 +187,21 @@ const DistortImage = ({
     setEnabled(fine && !reduced && !!gl);
   }, []);
 
+  // play only while in view: an autoplaying video decodes from page load,
+  // which sinks the FPS sample lib/quality.ts takes and degrades the tier
+  useEffect(() => {
+    if (!videoEl) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) videoEl.play().catch(() => {});
+        else videoEl.pause();
+      },
+      { rootMargin: "120px" }
+    );
+    io.observe(videoEl);
+    return () => io.disconnect();
+  }, [videoEl]);
+
   const onMove = (e: React.PointerEvent) => {
     const rect = wrap.current?.getBoundingClientRect();
     if (!rect) return;
@@ -231,7 +246,6 @@ const DistortImage = ({
           ref={setVideoEl}
           src={video}
           poster={src}
-          autoPlay
           muted
           loop
           playsInline
