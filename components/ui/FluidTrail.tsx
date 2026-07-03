@@ -2,13 +2,17 @@
 
 import { useEffect, useRef } from "react";
 import type WebGLFluidEnhanced from "webgl-fluid-enhanced";
+import { useQualityTier } from "@/lib/quality";
 
 // real Navier-Stokes fluid simulation: the cursor drags violet smoke across
-// the whole page. desktop fine-pointer only; reduced-motion users skip it.
+// the whole page. desktop fine-pointer only; reduced-motion users skip it;
+// low-tier machines never mount it. auto-pauses after 3s of cursor idle.
 const FluidTrail = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const tier = useQualityTier();
 
   useEffect(() => {
+    if (tier === "low") return;
     const fine = window.matchMedia("(pointer: fine)").matches;
     const reduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -18,9 +22,16 @@ const FluidTrail = () => {
 
     let sim: WebGLFluidEnhanced | null = null;
     let disposed = false;
+    let paused = false;
+    let lastMove = performance.now();
 
     const onMove = (e: PointerEvent) => {
+      lastMove = performance.now();
       if (!sim) return;
+      if (paused) {
+        sim.togglePause();
+        paused = false;
+      }
       // velocity-scaled dye injection; skip micro-movements
       const dx = e.movementX * 6;
       const dy = e.movementY * 6;
@@ -34,6 +45,15 @@ const FluidTrail = () => {
           : 1;
       sim.splatAtLocation(e.clientX * scaleX, e.clientY, dx, dy);
     };
+
+    // stop stepping the sim once the smoke has fully dissolved
+    const idleCheck = setInterval(() => {
+      if (!sim || paused) return;
+      if (performance.now() - lastMove > 3000) {
+        sim.togglePause();
+        paused = true;
+      }
+    }, 1000);
 
     // dynamic import keeps the sim out of the critical bundle
     import("webgl-fluid-enhanced").then(({ default: Fluid }) => {
@@ -50,12 +70,10 @@ const FluidTrail = () => {
         splatRadius: 0.13,
         splatForce: 4500,
         curl: 32, // swirly, but contained
-        bloom: true,
-        bloomIntensity: 0.45,
-        bloomThreshold: 0.5,
+        bloom: false, // the palette is bright enough; skip the extra passes
         sunrays: false,
-        simResolution: 128,
-        dyeResolution: 1024,
+        simResolution: tier === "high" ? 128 : 96,
+        dyeResolution: tier === "high" ? 768 : 512,
       });
       sim.start();
       window.addEventListener("pointermove", onMove, { passive: true });
@@ -63,10 +81,13 @@ const FluidTrail = () => {
 
     return () => {
       disposed = true;
+      clearInterval(idleCheck);
       window.removeEventListener("pointermove", onMove);
       sim?.stop();
     };
-  }, []);
+  }, [tier]);
+
+  if (tier === "low") return null;
 
   // the lib force-overwrites its container's position to `relative`, so the
   // fixed positioning lives on an outer wrapper it never touches

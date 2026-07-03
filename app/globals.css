@@ -351,8 +351,9 @@
   position: relative;
   border-radius: 1.25rem;
   background: rgba(14, 10, 22, 0.55);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  /* 12px reads the same as 18px on dark glass but recomputes much cheaper */
+  backdrop-filter: blur(12px) saturate(140%);
+  -webkit-backdrop-filter: blur(12px) saturate(140%);
 }
 .glass-panel::before {
   content: "";

@@ -6,6 +6,7 @@ import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 import { isEntered } from "./EntrySequence";
+import { useQualityTier } from "@/lib/quality";
 
 /* ------------------------------------------------------------------ */
 /*  simplex noise (Ashima / Ian McEwan, public domain)                 */
@@ -129,7 +130,7 @@ const sampleKeyframes = (p: number) => {
   };
 };
 
-const Blob = ({ quality }: { quality: "full" | "lite" }) => {
+const Blob = ({ detail }: { detail: number }) => {
   const group = useRef<THREE.Group>(null);
   const pointer = useRef(new THREE.Vector2(0, 0));
   const eased = useRef(new THREE.Vector2(0, 0));
@@ -212,11 +213,9 @@ const Blob = ({ quality }: { quality: "full" | "lite" }) => {
     uniforms.uAmp.value = 0.32 + Math.sin(t * 0.4) * 0.06 + imp * 0.38;
   });
 
-  const detail = quality === "full" ? 160 : 72;
-
   return (
     <group ref={group} scale={0} position={[0, 0.25, -2]}>
-      <mesh>
+      <mesh key={detail}>
         <sphereGeometry args={[1.35, detail, detail]} />
         <shaderMaterial
           vertexShader={blobVertex}
@@ -406,8 +405,16 @@ const ParticleField = ({ count }: { count: number }) => {
 /* ------------------------------------------------------------------ */
 type Mode = "full" | "lite" | "static";
 
+// what each quality tier is allowed to spend
+const TIER_CONFIG = {
+  high: { dpr: [1, 1.5] as [number, number], particles: 2400, blob: 160, bloom: true },
+  medium: { dpr: [1, 1.15] as [number, number], particles: 1400, blob: 110, bloom: true },
+  low: { dpr: [1, 1] as [number, number], particles: 800, blob: 72, bloom: false },
+};
+
 const SceneCanvas = () => {
   const [mode, setMode] = useState<Mode | null>(null);
+  const tier = useQualityTier();
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -428,10 +435,16 @@ const SceneCanvas = () => {
 
   if (mode !== "full" && mode !== "lite") return null;
 
+  // mobile ("lite") is its own floor; desktop scales with the measured tier
+  const cfg =
+    mode === "lite"
+      ? { dpr: [1, 1.25] as [number, number], particles: 700, blob: 72, bloom: false }
+      : TIER_CONFIG[tier];
+
   return (
     <div aria-hidden className="pointer-events-none fixed inset-0 z-0">
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={cfg.dpr}
         camera={{ position: [0, 0, 8], fov: 50 }}
         gl={{
           antialias: false,
@@ -439,11 +452,11 @@ const SceneCanvas = () => {
           powerPreference: "high-performance",
         }}
       >
-        <ParticleField count={mode === "lite" ? 700 : 2400} />
-        <Blob quality={mode} />
+        <ParticleField count={cfg.particles} />
+        <Blob detail={cfg.blob} />
         {mode === "full" && <CameraRig />}
 
-        {mode === "full" && (
+        {cfg.bloom && (
           <EffectComposer multisampling={0}>
             <Bloom
               mipmapBlur
