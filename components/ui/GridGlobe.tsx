@@ -8,7 +8,9 @@ const World = dynamic(() => import("./Globe").then((m) => m.World), {
 });
 
 const GridGlobe = () => {
-  // mount the three.js globe only once the card scrolls near the viewport
+  // mount the three.js globe only while the card is near the viewport —
+  // it auto-rotates every frame, so it also unmounts once you scroll well
+  // past it (the generous margin rebuilds it off-screen on the way back)
   const holder = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
 
@@ -16,13 +18,8 @@ const GridGlobe = () => {
     const el = holder.current;
     if (!el) return;
     const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          io.disconnect();
-        }
-      },
-      { rootMargin: "300px" }
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "600px" }
     );
     io.observe(el);
     return () => io.disconnect();

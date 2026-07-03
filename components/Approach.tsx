@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -79,6 +79,20 @@ export default Approach;
 const PinnedPhases = () => {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
+  // the dot-matrix canvas renders every frame at canvas size, so only keep
+  // it mounted while this section is actually near the viewport
+  const [nearView, setNearView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setNearView(entry.isIntersecting),
+      { rootMargin: "200px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -98,23 +112,25 @@ const PinnedPhases = () => {
       <div className="sticky top-0 flex h-screen items-center justify-center">
         <div className="glass-panel relative h-[62vh] w-full max-w-4xl overflow-hidden !rounded-[1.5rem]">
           {/* dot-matrix light field, retinted per phase */}
-          <AnimatePresence>
-            <motion.div
-              key={active}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.6 }}
-              className="absolute inset-0"
-            >
-              <CanvasRevealEffect
-                animationSpeed={phase.speed}
-                containerClassName="bg-[#0b0812]"
-                colors={phase.colors}
-                dotSize={2}
-              />
-            </motion.div>
-          </AnimatePresence>
+          {nearView && (
+            <AnimatePresence>
+              <motion.div
+                key={active}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0"
+              >
+                <CanvasRevealEffect
+                  animationSpeed={phase.speed}
+                  containerClassName="bg-[#0b0812]"
+                  colors={phase.colors}
+                  dotSize={2}
+                />
+              </motion.div>
+            </AnimatePresence>
+          )}
 
           {/* darken toward the edges so the copy stays legible */}
           <div

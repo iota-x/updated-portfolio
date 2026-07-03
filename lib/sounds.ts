@@ -143,6 +143,15 @@ export const clickSound = () => {
   breath(0.35, 0.015, 350, 1200);
 };
 
+/** blob poke: a deep sub-bass wobble with an airy ripple, like prodding
+ *  something huge and gelatinous floating in space */
+export const blobSound = () => {
+  tone(55, 1.1, 0.18, 0.004, 0.9);
+  tone(110, 0.8, 0.06, 0.015, 1.1);
+  setTimeout(() => tone(82, 0.6, 0.05, 0.02, 1.2), 90);
+  breath(0.55, 0.02, 180, 1600, 1.1);
+};
+
 /** enable: an ethereal two-note swell, like the scene breathing in */
 export const chime = () => {
   tone(261.6, 1.6, 0.035, 0.18, 1.3);

@@ -177,22 +177,13 @@ const ProjectPanel = ({
                 style={reduced ? undefined : { y: imgY }}
                 className="h-full w-full"
               >
-                {/* shared element: morphs into the takeover's panoramic band */}
-                <motion.div
-                  layoutId={`project-image-${project.id}`}
-                  transition={{
-                    layout: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
-                  }}
-                  className="h-full w-full"
-                >
-                  {/* WebGL liquid ripple on hover; plain img underneath as fallback */}
-                  <DistortImage
-                    src={img}
-                    alt={title}
-                    className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
-                      duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
-                  />
-                </motion.div>
+                {/* WebGL liquid ripple on hover; plain img underneath as fallback */}
+                <DistortImage
+                  src={img}
+                  alt={title}
+                  className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
+                    duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
+                />
               </motion.div>
               {/* violet light bleeding over the screenshot edge */}
               <div
@@ -394,9 +385,11 @@ const ProjectModal = ({
           animate="visible"
           className="mt-10"
         >
+          {/* no layoutId morph from the card: the card sits inside
+              scale/rotateX/tilt transforms, which framer's layout projection
+              can't measure through, so the morph always started misplaced */}
           <motion.div
-            layoutId={`project-image-${project.id}`}
-            transition={{ layout: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }}
+            variants={item}
             className="glass-panel h-[38vh] overflow-hidden !rounded-[1.5rem] md:h-[48vh]"
           >
             <DistortImage

@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import * as THREE from "three";
 
 import { isEntered } from "./EntrySequence";
+import { blobSound } from "@/lib/sounds";
 import { useQualityTier } from "@/lib/quality";
 
 /* ------------------------------------------------------------------ */
@@ -132,6 +133,8 @@ const sampleKeyframes = (p: number) => {
 
 const Blob = ({ detail }: { detail: number }) => {
   const group = useRef<THREE.Group>(null);
+  const mesh = useRef<THREE.Mesh>(null);
+  const camera = useThree((s) => s.camera);
   const pointer = useRef(new THREE.Vector2(0, 0));
   const eased = useRef(new THREE.Vector2(0, 0));
   const target = useRef(new THREE.Vector3(0, 0.25, -2));
@@ -139,6 +142,7 @@ const Blob = ({ detail }: { detail: number }) => {
   const maxScroll = useRef(1);
   // click impulse: a jolt of energy that ripples through the noise field
   const impulse = useRef(0);
+  const raycaster = useMemo(() => new THREE.Raycaster(), []);
 
   const uniforms = useMemo(
     () => ({ uTime: { value: 0 }, uAmp: { value: 0.32 } }),
@@ -158,8 +162,22 @@ const Blob = ({ detail }: { detail: number }) => {
         document.documentElement.scrollHeight - window.innerHeight
       );
     };
-    const onDown = () => {
+    // the canvas is pointer-events:none, so hit-test the blob manually.
+    // a direct hit gets a harder flinch and a deep wobble sound; clicks
+    // elsewhere keep the ambient ripple.
+    const ndc = new THREE.Vector2();
+    const onDown = (e: PointerEvent) => {
       impulse.current = 1;
+      if (!mesh.current || !isEntered()) return;
+      ndc.set(
+        (e.clientX / window.innerWidth) * 2 - 1,
+        -(e.clientY / window.innerHeight) * 2 + 1
+      );
+      raycaster.setFromCamera(ndc, camera);
+      if (raycaster.intersectObject(mesh.current).length > 0) {
+        impulse.current = 1.8;
+        blobSound();
+      }
     };
     measure();
     // page height settles as fonts/images load
@@ -173,7 +191,7 @@ const Blob = ({ detail }: { detail: number }) => {
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("resize", measure);
     };
-  }, []);
+  }, [camera, raycaster]);
 
   useFrame((state, delta) => {
     const g = group.current;
@@ -215,7 +233,7 @@ const Blob = ({ detail }: { detail: number }) => {
 
   return (
     <group ref={group} scale={0} position={[0, 0.25, -2]}>
-      <mesh key={detail}>
+      <mesh ref={mesh} key={detail}>
         <sphereGeometry args={[1.35, detail, detail]} />
         <shaderMaterial
           vertexShader={blobVertex}
