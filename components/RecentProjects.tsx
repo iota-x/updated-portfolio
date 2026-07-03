@@ -89,6 +89,7 @@ const ProjectPanel = ({
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const { title, des, img, iconLists, link, github } = project;
+  const video = "video" in project ? project.video : undefined;
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -177,13 +178,28 @@ const ProjectPanel = ({
                 style={reduced ? undefined : { y: imgY }}
                 className="h-full w-full"
               >
-                {/* WebGL liquid ripple on hover; plain img underneath as fallback */}
-                <DistortImage
-                  src={img}
-                  alt={title}
-                  className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
-                    duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
-                />
+                {/* live demo clip when available; WebGL liquid ripple image otherwise */}
+                {video ? (
+                  <video
+                    src={video}
+                    poster={img}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={`${title} demo`}
+                    className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
+                      duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
+                  />
+                ) : (
+                  <DistortImage
+                    src={img}
+                    alt={title}
+                    className="h-64 w-full scale-[1.15] object-cover object-top transition-transform
+                      duration-700 ease-out group-hover:scale-[1.19] sm:h-80 lg:h-full lg:min-h-[26rem]"
+                  />
+                )}
               </motion.div>
               {/* violet light bleeding over the screenshot edge */}
               <div
@@ -284,6 +300,7 @@ const ProjectModal = ({
   onClose: () => void;
 }) => {
   const { title, des, img, iconLists, link, github } = project;
+  const video = "video" in project ? project.video : undefined;
   const closeRef = useRef<HTMLButtonElement>(null);
 
   // move keyboard focus into the dialog when it opens
@@ -392,11 +409,25 @@ const ProjectModal = ({
             variants={item}
             className="glass-panel h-[38vh] overflow-hidden !rounded-[1.5rem] md:h-[48vh]"
           >
-            <DistortImage
-              src={img}
-              alt={title}
-              className="h-full w-full object-cover object-top"
-            />
+            {video ? (
+              <video
+                src={video}
+                poster={img}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                aria-label={`${title} demo`}
+                className="h-full w-full object-cover object-top"
+              />
+            ) : (
+              <DistortImage
+                src={img}
+                alt={title}
+                className="h-full w-full object-cover object-top"
+              />
+            )}
             {/* vignette so light screenshots blend into the dark stage */}
             <div
               aria-hidden

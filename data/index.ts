@@ -75,6 +75,7 @@ export const projects = [
     title: "Heartbeat — Solana mainnet, live in 3D",
     des: "Every light is a real transaction streaming off Solana mainnet. A websocket ingest service classifies every block; whale transfers land as golden comets with camera shake and synthesized bass. 60fps, 9 draw calls, zero allocations per frame.",
     img: "/heartbeat.webp",
+    video: "/heartbeat-demo.mp4",
     iconLists: ["/next.svg", "/ts.svg", "/tail.svg", "/three.svg"],
     link: "https://heartbeat-solana.vercel.app/",
     github: "https://github.com/iota-x/heartbeat",
