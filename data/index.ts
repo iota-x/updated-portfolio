@@ -72,6 +72,15 @@ export const gridItems = [
 export const projects = [
   {
     id: 1,
+    title: "WalletChat — every transaction, made transparent",
+    des: "An agentic wallet and cross-chain transaction verifier for Solana, Ethereum, and Bitcoin. State an intent in plain English; the agent plans it, simulates it against live chain state, and prints a verification slip with the exact balance diff — nothing signs until the guardrails pass and you arm it.",
+    img: "/walletchat.webp",
+    iconLists: ["/next.svg", "/ts.svg", "/tail.svg"],
+    link: "https://wallet-chat-x.vercel.app",
+    github: "https://github.com/iota-x/wallet-chat",
+  },
+  {
+    id: 2,
     title: "Heartbeat — Solana mainnet, live in 3D",
     des: "Every light is a real transaction streaming off Solana mainnet. A websocket ingest service classifies every block; whale transfers land as golden comets with camera shake and synthesized bass. 60fps, 9 draw calls, zero allocations per frame.",
     img: "/heartbeat.webp",
@@ -81,7 +90,7 @@ export const projects = [
     github: "https://github.com/iota-x/heartbeat",
   },
   {
-    id: 2,
+    id: 3,
     title: "Pulsar — on-chain automation for Solana",
     des: "A web3 'Zapier' for Solana that automates both on-chain and off-chain workflows — IF this happens → THEN do that. Triggers range from wallet deposits, balance thresholds, token swaps and NFT transfers to scheduled times and plain API calls, while actions span webhooks, Discord/email alerts, on-chain SPL token ops, staking, Jupiter swaps, liquidity-pool creation and stop-loss orders. A smart delegation system keeps it running 24/7 without ever giving up custody of your keys.",
     img: "/pulsar.webp",
@@ -90,7 +99,7 @@ export const projects = [
     github: "https://github.com/iota-x/pulsar",
   },
   {
-    id: 3,
+    id: 4,
     title: "Us — a couple's private space",
     des: "A cozy private world for two: journal together, save memories, answer a daily question of the day, play quizzes, and watch your streak of 'us' grow. No feed, no followers, no ads — just the two of with end-to-end encryption so its truly your own private space",
     img: "/app-local.webp",
@@ -99,7 +108,7 @@ export const projects = [
     github: "https://github.com/iota-x/digital-library",
   },
   {
-    id: 4,
+    id: 5,
     title: "NFT Library",
     des: "A full NFT marketplace on Solana showing NFTs owned by a user and trending collections. Connect a wallet or enter an address to explore the whole collection and past records, and even search an asset by its ID.",
     img: "/nft-library.webp",
@@ -108,22 +117,13 @@ export const projects = [
     github: "https://github.com/iota-x/nft-library",
   },
   {
-    id: 5,
+    id: 6,
     title: "Fancy course selling web-app",
     des: "A full-featured course-selling platform where creators can publish courses and learners can browse, purchase, and start learning instantly.",
     img: "/p3.webp",
     iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/stream.svg", "/c.svg"],
     link: "https://github.com/iota-x/course-selling-site",
     github: "https://github.com/iota-x/course-selling-site",
-  },
-  {
-    id: 6,
-    title: "Auth project using next-auth",
-    des: "A complete authentication system built with NextAuth — secure sign-in, session handling, and protected routes out of the box.",
-    img: "/p4.webp",
-    iconLists: ["/next.svg", "/tail.svg", "/ts.svg", "/three.svg", "/gsap.svg"],
-    link: "https://github.com/iota-x/auth-project",
-    github: "https://github.com/iota-x/auth-project",
   },
 ];
 

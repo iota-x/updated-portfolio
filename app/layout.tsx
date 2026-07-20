@@ -23,20 +23,48 @@ const title = "Ankit Pandey — Full-stack & Web3 Developer";
 const description =
   "I build software that feels alive — on-chain automation, web apps, and interfaces with atmosphere. Next.js, Solana, Three.js.";
 
+// Static export can't read env at request time, so default to the live domain
+// (override with NEXT_PUBLIC_SITE_URL at build). This is what makes og:image and
+// canonical URLs resolve absolutely, so link previews render everywhere.
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://portfolio-eiota.vercel.app";
+
 export const metadata: Metadata = {
-  // TODO: set NEXT_PUBLIC_SITE_URL (or hardcode) to the deployed domain
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-  ),
-  title,
+  metadataBase: new URL(siteUrl),
+  title: { default: title, template: "%s — Ankit Pandey" },
   description,
+  applicationName: "Ankit Pandey",
+  keywords: [
+    "Ankit Pandey",
+    "full-stack developer",
+    "web3 developer",
+    "Solana developer",
+    "Next.js",
+    "TypeScript",
+    "Three.js",
+    "React",
+    "blockchain",
+    "smart contracts",
+    "portfolio",
+  ],
+  authors: [{ name: "Ankit Pandey", url: siteUrl }],
+  creator: "Ankit Pandey",
   icons: { icon: "/favicon.svg" },
+  alternates: { canonical: "/" },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+  },
   openGraph: {
     title,
     description,
     type: "website",
+    url: siteUrl,
     siteName: "Ankit Pandey",
-    images: ["/og.png"],
+    locale: "en_US",
+    images: [
+      { url: "/og.png", width: 1200, height: 630, alt: "Ankit Pandey — Full-stack & Web3 Developer" },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -47,6 +75,22 @@ export const metadata: Metadata = {
   },
 };
 
+// Person structured data for richer search results.
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Ankit Pandey",
+  url: siteUrl,
+  jobTitle: "Full-stack & Web3 Developer",
+  description,
+  knowsAbout: ["Next.js", "TypeScript", "Solana", "Web3", "Three.js", "React"],
+  sameAs: [
+    "https://github.com/iota-x",
+    "https://x.com/iota_xx",
+    "https://www.linkedin.com/in/iotax/",
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -54,6 +98,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
+      </head>
       <body className={`${inter.className} ${syne.variable}`}>
         <ThemeProvider
           attribute="class"
