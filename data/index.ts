@@ -138,9 +138,4 @@ export const socialMedia = [
     img: "/twit.svg",
     link: "https://x.com/iota_xx",
   },
-  {
-    id: 3,  
-    img: "/link.svg",
-    link: "https://www.linkedin.com/in/iotax/",
-  },
 ];

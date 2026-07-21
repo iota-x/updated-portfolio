@@ -87,7 +87,6 @@ const personJsonLd = {
   sameAs: [
     "https://github.com/iota-x",
     "https://x.com/iota_xx",
-    "https://www.linkedin.com/in/iotax/",
   ],
 };
 
