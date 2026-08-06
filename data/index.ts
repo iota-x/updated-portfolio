@@ -100,10 +100,10 @@ export const projects = [
   },
   {
     id: 4,
-    title: "Us — a couple's private space",
-    des: "A cozy private world for two: journal together, save memories, answer a daily question of the day, play quizzes, and watch your streak of 'us' grow. No feed, no followers, no ads — just the two of with end-to-end encryption so its truly your own private space",
+    title: "Us — native Android widgets + end-to-end encryption",
+    des: "A private space for two, on Android and the web. Twelve home-screen widgets rendered as native RemoteViews — a live day counter, streaks, moods, a shared whiteboard — plus end-to-end encrypted journals with recovery keys and realtime sync over SSE. Built with React Native and Expo, including a patched native module so every widget lays out against the size the launcher actually draws rather than the larger one it reports.",
     img: "/app-local.webp",
-    iconLists: ["/next.svg", "/ts.svg", "/tail.svg", "/fm.svg"],
+    iconLists: ["/re.svg", "/ts.svg", "/next.svg", "/tail.svg"],
     link: "https://wearesocuteomg.vercel.app/",
     github: "https://github.com/iota-x/digital-library",
   },
