@@ -100,6 +100,15 @@ export const projects = [
   },
   {
     id: 4,
+    title: "Overshare — a menu-bar app that tells on you, lovingly",
+    des: "A cross-platform desktop app that watches what you're doing — app, file, browser tab, the song behind it — turns it into a warm one-liner, and sends it to your partner over Discord or Telegram. Ships as a self-contained .dmg and .exe, built on separate macOS and Windows CI runners because PyInstaller can't cross-compile. The Qt settings window runs in its own process — Qt can't share an event loop with the menu-bar host — and the two talk through a config file the app re-reads live, so nothing needs restarting.",
+    img: "/overshare.webp",
+    iconLists: ["/py.svg", "/qt.svg", "/git.svg"],
+    link: "https://iota-x.github.io/overshare/",
+    github: "https://github.com/iota-x/overshare",
+  },
+  {
+    id: 5,
     title: "Us — native Android widgets + end-to-end encryption",
     des: "A private space for two, on Android and the web. Twelve home-screen widgets rendered as native RemoteViews — a live day counter, streaks, moods, a shared whiteboard — plus end-to-end encrypted journals with recovery keys and realtime sync over SSE. Built with React Native and Expo, including a patched native module so every widget lays out against the size the launcher actually draws rather than the larger one it reports.",
     img: "/app-local.webp",
@@ -108,7 +117,7 @@ export const projects = [
     github: "https://github.com/iota-x/digital-library",
   },
   {
-    id: 5,
+    id: 6,
     title: "NFT Library",
     des: "A full NFT marketplace on Solana showing NFTs owned by a user and trending collections. Connect a wallet or enter an address to explore the whole collection and past records, and even search an asset by its ID.",
     img: "/nft-library.webp",
@@ -117,7 +126,7 @@ export const projects = [
     github: "https://github.com/iota-x/nft-library",
   },
   {
-    id: 6,
+    id: 7,
     title: "Fancy course selling web-app",
     des: "A full-featured course-selling platform where creators can publish courses and learners can browse, purchase, and start learning instantly.",
     img: "/p3.webp",
