@@ -1,5 +1,6 @@
 "use client";
-import { FaLocationArrow } from "react-icons/fa6";
+import { FaFileArrowDown, FaLocationArrow } from "react-icons/fa6";
+import { RESUME_URL } from "@/data";
 import { motion } from "framer-motion";
 
 import MagicButton from "./MagicButton";
@@ -70,15 +71,26 @@ const Hero = () => {
             animate={entered ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 1, delay: 1.25, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Magnetic strength={0.25}>
-              <a href="#projects">
-                <MagicButton
-                  title="Show my work"
-                  icon={<FaLocationArrow />}
-                  position="right"
-                />
-              </a>
-            </Magnetic>
+            <div className="flex flex-col gap-3 md:flex-row md:gap-4">
+              <Magnetic strength={0.25}>
+                <a href="#projects">
+                  <MagicButton
+                    title="Show my work"
+                    icon={<FaLocationArrow />}
+                    position="right"
+                  />
+                </a>
+              </Magnetic>
+              <Magnetic strength={0.25}>
+                <a href={RESUME_URL} target="_blank" rel="noopener noreferrer">
+                  <MagicButton
+                    title="Resume"
+                    icon={<FaFileArrowDown />}
+                    position="right"
+                  />
+                </a>
+              </Magnetic>
+            </div>
           </motion.div>
         </div>
       </div>

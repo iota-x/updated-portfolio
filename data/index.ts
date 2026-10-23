@@ -1,8 +1,12 @@
+/** the one-page resume in public/, linked from the nav, hero and footer */
+export const RESUME_URL = "/Ankit-Kumar-Pandey-Resume.pdf";
+
 export const navItems = [
   { name: "About", link: "#about" },
   { name: "Projects", link: "#projects" },
   { name: "Tech", link: "#technologies" },
-  { name: "Contact", link: "#contact" }
+  { name: "Contact", link: "#contact" },
+  { name: "Resume", link: RESUME_URL },
 ];
 
 export const gridItems = [

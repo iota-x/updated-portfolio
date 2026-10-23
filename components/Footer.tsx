@@ -2,7 +2,7 @@
 import { FaLocationArrow } from "react-icons/fa6";
 import { motion } from "framer-motion";
 
-import { socialMedia } from "@/data";
+import { RESUME_URL, socialMedia } from "@/data";
 import MagicButton from "./MagicButton";
 import Magnetic from "./ui/Magnetic";
 import WordReveal from "./ui/WordReveal";
@@ -52,7 +52,15 @@ const Footer = () => {
 
       <div className="mt-16 flex flex-col items-center justify-between gap-6 md:flex-row">
         <p className="text-sm font-light text-white-200 md:text-base md:font-normal">
-          Ankit Pandey
+          Ankit Pandey ·{" "}
+          <a
+            href={RESUME_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-purple/40 underline-offset-4 transition-colors hover:text-white"
+          >
+            Resume (PDF)
+          </a>
         </p>
 
         <div className="flex items-center gap-4">

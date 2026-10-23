@@ -72,7 +72,7 @@ export const FloatingNav = ({
       onMouseLeave={() => setHovered(null)}
       className={cn(
         // glass pill with a violet gradient hairline, matches the glass-panel language
-        "flex max-w-fit md:min-w-[70vw] lg:min-w-fit fixed z-[5000] top-10 inset-x-0 mx-auto px-4 py-2.5 rounded-full items-center justify-center space-x-1 shadow-[0_8px_32px_rgba(8,8,9,0.6)]",
+        "flex max-w-fit md:min-w-[70vw] lg:min-w-fit fixed z-[5000] top-10 inset-x-0 mx-auto px-1.5 sm:px-4 py-2.5 rounded-full items-center justify-center space-x-1 shadow-[0_8px_32px_rgba(8,8,9,0.6)]",
         className
       )}
       style={{
@@ -88,9 +88,11 @@ export const FloatingNav = ({
           <Magnetic key={`link=${idx}`} strength={0.3}>
             <Link
               href={navItem.link}
+              // a file (the resume), not a section: open it in its own tab
+              {...(navItem.link.startsWith("/") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
               onMouseEnter={() => setHovered(idx)}
               className={cn(
-                "relative flex items-center space-x-1 rounded-full px-4 py-2 transition-colors duration-300",
+                "relative flex items-center space-x-1 rounded-full px-2.5 sm:px-4 py-2 transition-colors duration-300",
                 isActive ? "text-white" : "text-neutral-400 hover:text-white"
               )}
             >
