@@ -113,6 +113,15 @@ export const projects = [
   },
   {
     id: 5,
+    title: "Awake — keep your Mac awake, lid shut or open",
+    des: "A native macOS menu-bar app, built because the paid one wanted $9. Timed, until-a-time or unlimited sessions over IOKit power assertions, plus a closed-lid mode that needs root: a one-time sudoers rule scoped to exactly two pmset commands, and a detached watchdog that puts sleep back if the app quits or crashes. Charger, battery and thermal safeguards, a SwiftUI popover that falls back to a window when the notch hides the icon, and a universal Apple-silicon + Intel build compiled straight with swiftc.",
+    img: "/awake.webp",
+    iconLists: ["/swift.svg", "/git.svg"],
+    link: "https://github.com/iota-x/awake/releases/latest",
+    github: "https://github.com/iota-x/awake",
+  },
+  {
+    id: 6,
     title: "Us — native Android widgets + end-to-end encryption",
     des: "A private space for two, on Android and the web. Twelve home-screen widgets rendered as native RemoteViews — a live day counter, streaks, moods, a shared whiteboard — plus end-to-end encrypted journals with recovery keys and realtime sync over SSE. Built with React Native and Expo, including a patched native module so every widget lays out against the size the launcher actually draws rather than the larger one it reports.",
     img: "/app-local.webp",
@@ -121,7 +130,7 @@ export const projects = [
     github: "https://github.com/iota-x/digital-library",
   },
   {
-    id: 6,
+    id: 7,
     title: "NFT Library",
     des: "A full NFT marketplace on Solana showing NFTs owned by a user and trending collections. Connect a wallet or enter an address to explore the whole collection and past records, and even search an asset by its ID.",
     img: "/nft-library.webp",
@@ -130,7 +139,7 @@ export const projects = [
     github: "https://github.com/iota-x/nft-library",
   },
   {
-    id: 7,
+    id: 8,
     title: "Fancy course selling web-app",
     des: "A full-featured course-selling platform where creators can publish courses and learners can browse, purchase, and start learning instantly.",
     img: "/p3.webp",

@@ -34,6 +34,7 @@ const TECH_NAMES: Record<string, string> = {
   "/gsap.svg": "GSAP",
   "/stream.svg": "Stream",
   "/c.svg": "Stream",
+  "/swift.svg": "Swift",
 };
 
 const techName = (icon: string) => TECH_NAMES[icon] ?? "";
