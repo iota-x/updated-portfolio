@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Syne } from "next/font/google";
+import localFont from "next/font/local";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
@@ -10,12 +10,16 @@ import EntrySequence from "@/components/ui/EntrySequence";
 import FluidTrail from "@/components/ui/FluidTrail";
 import SoundToggle from "@/components/ui/SoundToggle";
 
-const inter = Inter({ subsets: ["latin"] });
+// Fonts are self-hosted (latin subsets of Inter and Syne, copied from next/font/google's own output) so a build
+// never depends on fonts.googleapis.com: on 2026-11-23 Vercel's build failed inside the Google font loader
+// ("Cannot read properties of null (reading '1')") with no code change to the fonts.
+const inter = localFont({ src: "./fonts/inter-latin.woff2", weight: "100 900", display: "swap" });
 
 // display face for headlines — otherworldly grotesk, body copy stays Inter
-const syne = Syne({
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
+const syne = localFont({
+  src: "./fonts/syne-latin.woff2",
+  weight: "600 800",
+  display: "swap",
   variable: "--font-display",
 });
 
