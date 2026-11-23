@@ -35,6 +35,11 @@ const TECH_NAMES: Record<string, string> = {
   "/stream.svg": "Stream",
   "/c.svg": "Stream",
   "/swift.svg": "Swift",
+  "/node.svg": "Node.js",
+  "/mongo.svg": "MongoDB",
+  "/git.svg": "Git",
+  "/py.svg": "Python",
+  "/qt.svg": "Qt",
 };
 
 const techName = (icon: string) => TECH_NAMES[icon] ?? "";

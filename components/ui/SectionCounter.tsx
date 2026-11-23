@@ -8,6 +8,7 @@ const SECTIONS = [
   "home",
   "about",
   "projects",
+  "open-source",
   "technologies",
   "approach",
   "contact",

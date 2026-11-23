@@ -9,6 +9,7 @@ import Approach from "@/components/Approach";
 import RecentProjects from "@/components/RecentProjects";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 import Technologies from "@/components/Technologies";
+import OpenSource from "@/components/OpenSource";
 import SceneCanvas from "@/components/ui/SceneCanvas";
 import SectionCounter from "@/components/ui/SectionCounter";
 
@@ -23,6 +24,7 @@ const Home = () => {
         <Hero />
         <Grid />
         <RecentProjects />
+        <OpenSource />
         <Technologies />
         <Approach />
         <Footer />
